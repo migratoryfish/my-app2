@@ -98,19 +98,16 @@ class Game extends React.Component {
         'Go to move ' + 'row: ' + step.startCoordinates.row + ' col: '+ step.startCoordinates.col :
         'Go to game start';
 
-      if(stepNumber == move){
-        return(
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}><strong>{desc}</strong></button>
-          </li>
-        );
-      }else{
-        return(
-          <li key={move}>
-            <button onClick={() => this.jumpTo(move)}>{desc}</button>
-          </li>
-        );
-      }
+      return(
+        <li key={move}>
+          <button
+           onClick={() => this.jumpTo(move)}
+           className={move == stepNumber ? 'history-button': ''}
+           >
+            {desc}
+            </button>
+        </li>
+      );
 
     });
 
