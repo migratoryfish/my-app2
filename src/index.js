@@ -95,7 +95,7 @@ class Game extends React.Component {
 
     const moves = history.map((step, move) => {
       const desc = move ?
-        'Go to move ' + 'row: ' + history[move].startCoordinates.row + ' col: '+ history[move].startCoordinates.col :
+        'Go to move ' + 'row: ' + step.startCoordinates.row + ' col: '+ step.startCoordinates.col :
         'Go to game start';
 
       if(stepNumber == move){
