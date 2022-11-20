@@ -54,6 +54,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      isAsc : true,
     };
   }
 
@@ -78,6 +79,12 @@ class Game extends React.Component {
     });
   }
 
+  ascDescToggle(isAsc){
+    this.setState({
+      isAsc : !isAsc,
+    });
+  }
+
   jumpTo(step){
     this.setState({
       stepNumber: step,
@@ -86,22 +93,25 @@ class Game extends React.Component {
   }
 
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
+    const history = this.state.isAsc ? this.state.history : [...this.state.history].reverse();
+    const currentStepNumber = this.state.isAsc ? this.state.stepNumber : history.length - 1 - this.state.stepNumber;
+    const current = history[currentStepNumber];
     const winner  = calculateWinner(current.squares);
-    const stepNumber = this.state.stepNumber
 
     const moves = history.map((step, move) => {
-      const desc = move ?
+      const moveIndex = this.state.isAsc ? move : history.length - 1 - move;
+    //  const desc = move ?
+      const desc = moveIndex ?
         'Go to move ' + 'row: ' + step.startCoordinates.row + ' col: '+ step.startCoordinates.col :
         'Go to game start';
 
       return(
-        <li key={move}>
+        <li key={moveIndex}>
           <button
-           onClick={() => this.jumpTo(move)}
-           className={move == stepNumber ? 'history-button': ''}
-           >
+          onClick={() => this.jumpTo(moveIndex)}
+//          className={move == stepNumber ? 'history-button': ''}
+          className={move == currentStepNumber ? 'history-button': ''}
+          >
             {desc}
             </button>
         </li>
@@ -126,6 +136,9 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+          <button onClick={() => this.ascDescToggle(this.state.isAsc)}>
+            {this.state.isAsc ? "ASC" : "DESC"}
+          </button>
           <ol>{moves}</ol>
         </div>
       </div>
