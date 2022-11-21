@@ -100,8 +100,8 @@ class Game extends React.Component {
   render() {
     const history = this.state.isAsc ? this.state.history : [...this.state.history].reverse();
     const currentStepNumber = this.state.isAsc ? this.state.stepNumber : history.length - 1 - this.state.stepNumber;
-    const current = history[currentStepNumber];
-    const winnerInfo  = calculateWinner(current.squares);
+    const currentHistory = history[currentStepNumber];
+    const winnerInfo  = calculateWinner(currentHistory.squares);
 
     const moves = history.map((step, move) => {
       const moveIndex = this.state.isAsc ? move : history.length - 1 - move;
@@ -125,6 +125,8 @@ class Game extends React.Component {
     let status;
     if(winnerInfo.winner){
       status = 'Winner: ' + winnerInfo.winner;
+    }else if(winnerInfo.isDraw){
+      status = 'draw this match'
     }else{
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
     }
@@ -133,7 +135,7 @@ class Game extends React.Component {
       <div className="game">
         <div className="game-board">
           <Board
-            squares={current.squares}
+            squares={currentHistory.squares}
             onClick={(i) => this.handleClick(i)}
             winnerLines={winnerInfo.winnerLines}
            />
@@ -173,12 +175,14 @@ function calculateWinner(squares) {
       return {
         winner : squares[a],
         winnerLines : lines[i],
+        isDraw : false,
       };
     }
   }
   return {
     winner : null,
     winnerLines : [],
+    isDraw : squares.at(-1) !== null ? true : false,
   };
 
 }
