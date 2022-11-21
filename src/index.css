@@ -32,6 +32,10 @@ body {
     width: 34px;
   }
 
+  .square.caused-win {
+    background: #ffff00;
+  }
+
   .history-button{
     font-weight: bold;
   }
